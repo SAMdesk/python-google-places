@@ -106,7 +106,7 @@ def geocode_location(location, sensor=False, api_key=None):
     location -- A human-readable location, e.g 'London, England'
     sensor   -- Boolean flag denoting if the location came from a device using
                 its' location sensor (default False)
-    api_key  -- A valid Google Places API key. 
+    api_key  -- A valid Google Places API key.
 
     raises:
     GooglePlacesError -- if the geocoder fails to find a location.
@@ -234,7 +234,7 @@ class GooglePlaces(object):
                sensor=False, type=None, types=[], pagetoken=None):
         """Perform a nearby search using the Google Places API.
 
-        One of either location, lat_lng or pagetoken are required, the rest of 
+        One of either location, lat_lng or pagetoken are required, the rest of
         the keyword arguments are optional.
 
         keyword arguments:
@@ -262,8 +262,8 @@ class GooglePlaces(object):
                     Places (default []). If there is only one item the request
                     will be send as type param.
         pagetoken-- Optional parameter to force the search result to return the next
-                    20 results from a previously run search. Setting this parameter 
-                    will execute a search with the same parameters used previously. 
+                    20 results from a previously run search. Setting this parameter
+                    will execute a search with the same parameters used previously.
                     (default None)
         """
         if location is None and lat_lng is None and pagetoken is None:
@@ -309,7 +309,7 @@ class GooglePlaces(object):
                     radius=3200, type=None, types=[], location=None, pagetoken=None):
         """Perform a text search using the Google Places API.
 
-        Only the one of the query or pagetoken kwargs are required, the rest of the 
+        Only the one of the query or pagetoken kwargs are required, the rest of the
         keyword arguments are optional.
 
         keyword arguments:
@@ -318,8 +318,8 @@ class GooglePlaces(object):
         location -- A human readable location, e.g 'London, England'
                     (default None)
         pagetoken-- Optional parameter to force the search result to return the next
-                    20 results from a previously run search. Setting this parameter 
-                    will execute a search with the same parameters used previously. 
+                    20 results from a previously run search. Setting this parameter
+                    will execute a search with the same parameters used previously.
                     (default None)
         radius   -- The radius (in meters) around the location/lat_lng to
                     restrict the search to. The maximum is 50000 meters.
@@ -833,6 +833,7 @@ class Place(object):
         self._id = place_data.get('id', '')
         self._reference = place_data.get('reference', '')
         self._name = place_data.get('name','')
+        self._formatted_address = place_data.get('formatted_address', '')
         self._vicinity = place_data.get('vicinity', '')
         self._geo_location = place_data['geometry']['location']
         self._rating = place_data.get('rating','')
@@ -919,6 +920,19 @@ class Place(object):
         return self._name
 
     @property
+    def formatted_address(self):
+        """Returns a string containing the human-readable address of this place.
+
+        Often this address is equivalent to the "postal address," which
+        sometimes differs from country to country. (Note that some countries,
+        such as the United Kingdom, do not allow distribution of complete postal
+        addresses due to licensing restrictions.)
+        """
+        if self._formatted_address == '' and self.details != None and 'formatted_address' in self.details:
+            self._formatted_address = self.details['formatted_address']
+        return self._formatted_address
+
+    @property
     def vicinity(self):
         """Returns a feature name of a nearby location.
 
@@ -946,18 +960,6 @@ class Place(object):
         """Returns the JSON response from Google Places Detail search API."""
         self._validate_status()
         return self._details
-
-    @property
-    def formatted_address(self):
-        """Returns a string containing the human-readable address of this place.
-
-        Often this address is equivalent to the "postal address," which
-        sometimes differs from country to country. (Note that some countries,
-        such as the United Kingdom, do not allow distribution of complete postal
-        addresses due to licensing restrictions.)
-        """
-        self._validate_status()
-        return self.details.get('formatted_address')
 
     @property
     def local_phone_number(self):
