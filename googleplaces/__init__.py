@@ -724,8 +724,8 @@ class Prediction(object):
         """
         Returns a list of feature types describing the given result.
         """
-        if self._types == '' and self.details != None and 'types' in self.details:
-            self._icon = self.details['types']
+        if self._types == '' and self._details != None and 'types' in self._details:
+            self._icon = self._details['types']
         return self._types
 
     # The following properties require a further API call in order to be
@@ -893,15 +893,15 @@ class Place(object):
     @property
     def icon(self):
         """Returns the URL of a recommended icon for display."""
-        if self._icon == '' and self.details != None and 'icon' in self.details:
-            self._icon = self.details['icon']
+        if self._icon == '' and self._details != None and 'icon' in self._details:
+            self._icon = self._details['icon']
         return self._icon
 
     @property
     def types(self):
         """Returns a list of feature types describing the given result."""
-        if self._types == '' and self.details != None and 'types' in self.details:
-            self._icon = self.details['types']
+        if self._types == '' and self._details != None and 'types' in self._details:
+            self._icon = self._details['types']
         return self._types
 
     @property
@@ -915,8 +915,8 @@ class Place(object):
     @property
     def name(self):
         """Returns the human-readable name of the place."""
-        if self._name == '' and self.details != None and 'name' in self.details:
-            self._name = self.details['name']
+        if self._name == '' and self._details != None and 'name' in self._details:
+            self._name = self._details['name']
         return self._name
 
     @property
@@ -928,8 +928,8 @@ class Place(object):
         such as the United Kingdom, do not allow distribution of complete postal
         addresses due to licensing restrictions.)
         """
-        if self._formatted_address == '' and self.details != None and 'formatted_address' in self.details:
-            self._formatted_address = self.details['formatted_address']
+        if self._formatted_address == '' and self._details != None and 'formatted_address' in self._details:
+            self._formatted_address = self._details['formatted_address']
         return self._formatted_address
 
     @property
@@ -939,8 +939,8 @@ class Place(object):
         Often this feature refers to a street or neighborhood within the given
         results.
         """
-        if self._vicinity == '' and self.details != None and 'vicinity' in self.details:
-            self._vicinity = self.details['vicinity']
+        if self._vicinity == '' and self._details != None and 'vicinity' in self._details:
+            self._vicinity = self._details['vicinity']
         return self._vicinity
 
     @property
@@ -949,8 +949,8 @@ class Place(object):
 
         This method will return None for places that have no rating.
         """
-        if self._rating == '' and self.details != None and 'rating' in self.details:
-            self._rating = self.details['rating']
+        if self._rating == '' and self._details != None and 'rating' in self._details:
+            self._rating = self._details['rating']
         return self._rating
 
     # The following properties require a further API call in order to be
@@ -965,18 +965,18 @@ class Place(object):
     def local_phone_number(self):
         """Returns the Place's phone number in its local format."""
         self._validate_status()
-        return self.details.get('formatted_phone_number')
+        return self._details.get('formatted_phone_number')
 
     @property
     def international_phone_number(self):
         self._validate_status()
-        return self.details.get('international_phone_number')
+        return self._details.get('international_phone_number')
 
     @property
     def website(self):
         """Returns the authoritative website for this Place."""
         self._validate_status()
-        return self.details.get('website')
+        return self._details.get('website')
 
     @property
     def url(self):
@@ -986,7 +986,7 @@ class Place(object):
         that shows detailed results about this Place to the user.
         """
         self._validate_status()
-        return self.details.get('url')
+        return self._details.get('url')
 
     @property
     def html_attributions(self):
@@ -997,7 +997,7 @@ class Place(object):
         module comments for links to the relevant url.
         """
         self._validate_status()
-        return self.details.get('html_attributions', [])
+        return self._details.get('html_attributions', [])
 
     @property
     def has_attributions(self):
@@ -1036,7 +1036,7 @@ class Place(object):
     def photos(self):
         self.get_details()
         return map(lambda i: Photo(self._query_instance, i),
-                   self.details.get('photos', []))
+                   self._details.get('photos', []))
 
     def _validate_status(self):
         if self._details is None:
