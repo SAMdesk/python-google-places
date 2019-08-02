@@ -134,7 +134,7 @@ def _get_place_details(place_id, api_key, sensor=False,
                                               {'placeid': place_id,
                                                'sensor': str(sensor).lower(),
                                                'key': api_key,
-                                               'fields': 'formatted_address,geomery,name,place_id,types',
+                                               'fields': 'address_components,formatted_address,geomery,name,place_id,types',
                                                'language': language})
     _validate_response(url, detail_response)
     return detail_response['result']
