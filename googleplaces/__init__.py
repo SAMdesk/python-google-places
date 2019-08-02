@@ -333,6 +333,7 @@ class GooglePlaces(object):
                     will be send as type param.
         """
         self._request_params = {'query': query}
+        self._request_params['fields'] = 'formatted_address,geomery,name,place_id,types'
         if lat_lng is not None or location is not None:
             lat_lng_str = self._generate_lat_lng_string(lat_lng, location)
             self._request_params['location'] = lat_lng_str
@@ -388,7 +389,6 @@ class GooglePlaces(object):
             lat_lng_str = self._generate_lat_lng_string(lat_lng, location)
             self._request_params['location'] = lat_lng_str
         self._request_params['radius'] = radius
-        self._request_params['fields'] = 'formatted_address,geomery,name,place_id,types'
         if types:
             self._request_params['types'] = types
         if len(components) > 0:
