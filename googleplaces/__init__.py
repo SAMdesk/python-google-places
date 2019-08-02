@@ -134,6 +134,7 @@ def _get_place_details(place_id, api_key, sensor=False,
                                               {'placeid': place_id,
                                                'sensor': str(sensor).lower(),
                                                'key': api_key,
+                                               'fields': 'formatted_address,geomery,name,place_id,types',
                                                'language': language})
     _validate_response(url, detail_response)
     return detail_response['result']
@@ -387,6 +388,7 @@ class GooglePlaces(object):
             lat_lng_str = self._generate_lat_lng_string(lat_lng, location)
             self._request_params['location'] = lat_lng_str
         self._request_params['radius'] = radius
+        self._request_params['fields'] = 'formatted_address,geomery,name,place_id,types'
         if types:
             self._request_params['types'] = types
         if len(components) > 0:
